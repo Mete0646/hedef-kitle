@@ -1,0 +1,64 @@
+import discord
+from discord.ext import commands
+
+# Botun izinleri
+intents = discord.Intents.default()
+intents.message_content = True
+
+# Botun komut öneki ve başlatılması
+bot = commands.Bot(command_prefix='.', intents=intents)
+
+# Botun başlatılma durumu
+@bot.event
+async def on_ready():
+    print(f'Bot {bot.user.name} olarak giriş yaptı!')
+    await bot.change_presence(activity=discord.Game(name="Atık Ayrımı Yardımcısı"))
+
+# Atık kategorilerine göre rehberlik eden bir komut
+@bot.command()
+async def atik(ctx, *, atik_turu):
+    atik_turu = atik_turu.lower()
+
+    if "plastik" in atik_turu:
+        await ctx.send(
+            "Plastik atıkları geri dönüşüm kutusuna atabilirsiniz. Ancak plastik poşetler, ince plastikler ve plastik oyuncaklar genellikle geri dönüştürülemez. "
+            "Lütfen geri dönüştürülebilir sembolüne dikkat edin!"
+        )
+        with open("C:\\Users\\Mete Sarıdurmuşoğlu\\Desktop\\Kodland\\İmages\\plastic.jpg", 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+    elif "cam" in atik_turu:
+        await ctx.send(
+            "Cam şişeleri ve kavanozları geri dönüşüm kutusuna atabilirsiniz. Fakat kırık camlar, ampuller ve aynalar geri dönüştürülemez."
+        )
+        with open("C:\\Users\\Mete Sarıdurmuşoğlu\\Desktop\\Kodland\\İmages\\cam.jpg", 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+    elif "kağıt" in atik_turu:
+        await ctx.send(
+            "Kağıt ve karton atıklarını geri dönüşüm kutusuna atabilirsiniz. Islanmış veya yağlanmış kağıtlar geri dönüştürülemez."
+        )
+        with open("C:\\Users\\Mete Sarıdurmuşoğlu\\Desktop\\Kodland\\İmages\\kagit.jpg", 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+    elif "organik" in atik_turu or "yemek" in atik_turu:
+        await ctx.send(
+            "Organik atıkları kompost yapabilirsiniz. Sebze, meyve kabukları, kahve telvesi gibi atıklar komposta uygundur. "
+            "Ancak et ve süt ürünlerini komposta eklememelisiniz."
+        )
+        with open("C:\\Users\\Mete Sarıdurmuşoğlu\\Desktop\\Kodland\\İmages\\organik-urunler.jpeg", 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+    elif "metal" in atik_turu:
+        await ctx.send(
+            "Alüminyum kutular, teneke kutular gibi metal atıkları geri dönüşüm kutusuna atabilirsiniz. "
+            "Ancak boya kutuları ve kimyasal içeren metaller geri dönüştürülemez."
+        )
+        with open("C:\\Users\\Mete Sarıdurmuşoğlu\\Desktop\\Kodland\\İmages\\metal.jpeg", 'rb') as f:
+            picture = discord.File(f)
+        await ctx.send(file=picture)
+    else:
+        await ctx.send("Bu atık türü için henüz bir bilgi yok. Lütfen yaygın atık türlerini kullanın: plastik, cam, kağıt, organik, metal.")
+
+# Botun çalıştırılması
+bot.run('')  # Burada YOUR_BOT_TOKEN kısmını kendi bot token'ınız ile değiştirin.
